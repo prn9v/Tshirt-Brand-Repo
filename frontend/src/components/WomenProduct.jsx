@@ -29,10 +29,7 @@ const WomenProduct = () => {
     const newUrl = `/products/${productId}`;
     navigate(newUrl); // Updates the URL dynamically
   };
-
-  // Handle Sorting Change
-  const handleSortChange = (e) => setSortBy(e.target.value);
-
+  
   // Render
   if (error) {
     return <p className="text-red-500 text-center">{error}</p>;

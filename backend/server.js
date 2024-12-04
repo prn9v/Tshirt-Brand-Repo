@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://localhost:3000' // Frontend URL, adjust in production
+    origin: 'https://aeshthreetstshirts.vercel.app' // Frontend URL, adjust in production
 }));
 
 // MongoDB Atlas Connection
