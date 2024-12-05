@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 module.exports = upload;
   // API endpoint to handle product creation
-  router.post('/add', upload.single('productImage'), async (req, res) => {
+  router.post('/add-product', upload.single('productImage'), async (req, res) => {
     try {
         // Validate required fields
         const {
