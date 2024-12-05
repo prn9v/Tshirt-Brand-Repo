@@ -18,35 +18,87 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 module.exports = upload;
   // API endpoint to handle product creation
-  router.post('/add', upload.single('productImage'), async(req, res) => {
+  router.post('/add', upload.single('productImage'), async (req, res) => {
     try {
-      const product = new Product({
-        productName: req.body.productName,
-        productDescription: req.body.productDescription,
-        productPrice: req.body.productPrice,
-        productSizes: req.body.productSizes.split(","), // Assuming sizes are sent as a comma-separated string
-        productColors: req.body.productColors.split(","), // Assuming colors are sent as a comma-separated string
-        productImage: {
-          data: fs.readFileSync(req.file.path),
-          contentType: req.file.mimetype,
-        },
-        productId: req.body.productId,
-        productDiscount: req.body.productDiscount,
-        productFinalPrice: req.body.productFinalPrice,
-        productGender: req.body.productGender, // Assuming genders are sent as a comma-separated string
-        productType: req.body.productType,
-      });
-  
-      await product.save();
-  
-      // Optionally, delete the uploaded file from the server
-      fs.unlinkSync(req.file.path);
-  
-      res.status(201).json({ message: "Product created successfully", product });
+        // Validate required fields
+        const {
+            productName,
+            productDescription,
+            productPrice,
+            productSizes,
+            productColors,
+            productId,
+            productDiscount,
+            productFinalPrice,
+            productGender,
+            productType
+        } = req.body;
+
+        if (
+            !productName ||
+            !productDescription ||
+            !productPrice ||
+            !productSizes ||
+            !productColors ||
+            !productId ||
+            !productDiscount ||
+            !productFinalPrice ||
+            !productGender ||
+            !productType
+        ) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        // Validate `productId` as a MongoDB ObjectId if required
+        if (!mongoose.isValidObjectId(productId)) {
+            return res.status(400).json({ error: "Invalid Product ID" });
+        }
+
+        // Validate `req.file` for the uploaded image
+        if (!req.file) {
+            return res.status(400).json({ error: "Product image is required" });
+        }
+
+        // Create and save the product
+        const product = new Product({
+            productName,
+            productDescription,
+            productPrice,
+            productSizes: productSizes.split(","), // Assuming sizes are sent as a comma-separated string
+            productColors: productColors.split(","), // Assuming colors are sent as a comma-separated string
+            productImage: {
+                data: fs.readFileSync(req.file.path),
+                contentType: req.file.mimetype,
+            },
+            productId,
+            productDiscount,
+            productFinalPrice,
+            productGender: productGender.split(","), // Assuming genders are sent as a comma-separated string
+            productType,
+        });
+
+        await product.save();
+
+        // Optionally, delete the uploaded file from the server
+        fs.unlinkSync(req.file.path);
+
+        res.status(201).json({ message: "Product created successfully", product });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        console.error(err);
+
+        // Handle specific error types
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ error: err.message });
+        }
+
+        if (err.code === 11000) { // Handle duplicate key errors
+            return res.status(400).json({ error: "Duplicate Product ID" });
+        }
+
+        // General error response
+        res.status(500).json({ error: "An error occurred while creating the product" });
     }
-  });
+});
 
 // Get all products (Customer view)
 router.get('/', async (req, res) => {
