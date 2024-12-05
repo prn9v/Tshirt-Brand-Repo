@@ -64,7 +64,7 @@ module.exports = upload;
     const product = new Product({
       productName,
       productDescription,
-      productPrice: parseFloat(productPrice), // Ensure number format
+      productPrice, // Ensure number format
       productSizes: productSizes.split(',').map((size) => size.trim()), // Convert to array
       productColors: productColors.split(',').map((color) => color.trim()), // Convert to array
       productImage: {
@@ -72,8 +72,8 @@ module.exports = upload;
         contentType: req.file.mimetype,
       },
       productId, // Ensure unique product ID
-      productDiscount: parseFloat(productDiscount),
-      productFinalPrice: parseFloat(productFinalPrice),
+      productDiscount,
+      productFinalPrice,
       productGender, // Gender as a string
       productType,
     });
@@ -86,6 +86,7 @@ module.exports = upload;
 
     res.status(201).json({ message: 'Product created successfully', product });
   } catch (err) {
+    console.log("error is given has ",err);
     console.error(err);
 
     // Handle validation errors
