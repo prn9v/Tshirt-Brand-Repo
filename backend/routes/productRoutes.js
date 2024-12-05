@@ -74,7 +74,7 @@ module.exports = upload;
             productId,
             productDiscount,
             productFinalPrice,
-            productGender: productGender.split(","), // Assuming genders are sent as a comma-separated string
+            productGender, // Assuming genders are sent as a comma-separated string
             productType,
         });
 
