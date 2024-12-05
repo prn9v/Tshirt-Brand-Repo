@@ -34,7 +34,7 @@ const productSchema = new mongoose.Schema({
         contentType: String 
     },
     productId: {
-        type: mongoose.Schema.Types.ObjectId, // Use ObjectId for MongoDB consistency
+        type: Number, // Use ObjectId for MongoDB consistency
         required: [true, "Product ID is required"],
         unique: true // Ensures no duplicate IDs are created
     },
