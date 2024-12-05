@@ -4,6 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const mongoose = require('mongoose');
 
 // Configure storage
 const storage = multer.diskStorage({
@@ -136,6 +137,15 @@ router.get('/:productId', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+app.get('/health', async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.status(200).json({ message: "MongoDB connected successfully" });
+    } catch (err) {
+        res.status(500).json({ error: "MongoDB connection failed", details: err.message });
+    }
 });
 
 module.exports = router;
