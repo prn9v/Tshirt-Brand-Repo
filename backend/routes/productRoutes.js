@@ -19,7 +19,8 @@ const mongoose = require('mongoose');
 // const upload = multer({ storage });
 // module.exports = upload;
   // API endpoint to handle product creation
- router.post('/add-product/direct', upload.single('productImage'), async (req, res) => {
+// upload.single('productImage'),
+ router.post('/add-product/direct', async (req, res) => {
     try {
         const {
             productName,
