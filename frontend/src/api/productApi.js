@@ -2,6 +2,17 @@ import axios from 'axios';
 
 const API_URL = 'https://aeshthreets-api.onrender.com/api/products'; // Backend API URL
 
+// Add a new product (for admin use)
+export const addProduct = async (productData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Important for FormData
+      },
+    };
+    return await axios.post(`${API_URL}/add-product/direct`, productData, config);
+};
+
+
 // Fetch all products
 export const fetchProducts = async () => {
     try {
@@ -13,15 +24,6 @@ export const fetchProducts = async () => {
     }
 };
 
-// Add a new product (for admin use)
-export const addProduct = async (productData) => {
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Important for FormData
-      },
-    };
-    return await axios.post(`${API_URL}/add-product/direct`, productData, config);
-};
 
 export const fetchProductById = async (productId) => {
   try {
