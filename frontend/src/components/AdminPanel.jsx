@@ -4,7 +4,6 @@ import { addProduct } from '../api/productApi';
 const AdminPage = () => {
   const [product, setProduct] = useState({
       productName: '',
-      productId: '',
       productImage: null,
       productSizes: [],
       productPrice: '',
@@ -52,7 +51,6 @@ const handleSubmit = async (e) => {
   const formData = new FormData();
 
   // Add product data to FormData
-  if (product.productId) formData.append('productId', product.productId); // Optional
   if (product.productImage) formData.append('productImage', product.productImage); // Optional
   formData.append('productName', product.productName);
   formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
@@ -79,7 +77,6 @@ const handleSubmit = async (e) => {
     // Reset form state after successful submission
     setProduct({
       productName: '',
-      productId: '',
       productImage: null,
       productSizes: [],
       productPrice: '',
@@ -109,7 +106,7 @@ const handleSubmit = async (e) => {
             </div>
             <form className="space-y-6" onSubmit={handleSubmit} encType="multipart/form-data">
               <div className="rounded-md shadow-sm -space-y-px">
-                {['productId', 'productName', 'productType', 'productPrice', 'productDiscount', 'productFinalPrice'].map((field) => (
+                {['productName', 'productType', 'productPrice', 'productDiscount', 'productFinalPrice'].map((field) => (
                   <div key={field} className="mb-4">
                     <label htmlFor={field} className="sr-only">
                       {field.charAt(0).toUpperCase() + field.slice(1).replace('product', '')}
@@ -118,6 +115,7 @@ const handleSubmit = async (e) => {
                       id={field}
                       name={field}
                       type={field.includes('Price') || field.includes('Discount') ? 'number' : 'text'}
+                      required
                       className="appearance-none rounded-none relative block w-full px-3 py-2 border border-green-300 placeholder-green-500 text-green-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                       placeholder={field.charAt(0).toUpperCase() + field.slice(1).replace('product', '')}
                       value={product[field]}
