@@ -13,30 +13,38 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // Parse JSON bodies
 app.use(cors({
-    origin: 'https://aeshthreets-tshirts.onrender.com' // Frontend URL, adjust in production
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // Use env variable for frontend URL
 }));
 
 // MongoDB Atlas Connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://pranavdeshmukh5454:5DUxv2OyPWWdBAwk@cluster0.4snwp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+    console.error('MongoDB connection string (MONGO_URI) is not defined in environment variables.');
+    process.exit(1);
+}
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected successfully'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+    .catch((err) => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Exit process on critical error
+    });
 
 // Routes
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
-// Static Files for Uploads
+// Serve Static Files for Uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Root Route
 app.get('/', (req, res) => {
     res.status(200).send({
         message: "Welcome to the E-commerce API - Node.js",
-        status: true
+        status: true,
     });
 });
 
