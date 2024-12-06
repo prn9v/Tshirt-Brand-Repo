@@ -91,7 +91,7 @@ const ProductCard = () => {
           <div className="flex flex-col md:flex-row">
             {/* Product Images */}
             <div className="md:w-1/2">
-{/*               <div className="relative h-64 sm:h-80 md:h-full">
+              <div className="relative h-64 sm:h-80 md:h-full">
                 <img 
                   src={product.productImage} 
                   alt={product.productName} 
@@ -102,7 +102,7 @@ const ProductCard = () => {
                     {product.productDiscount}% OFF
                   </div>
                 )}
-              </div> */}
+              </div>
             </div>
 
             {/* Product Details */}
