@@ -27,7 +27,6 @@ module.exports = upload;
             productPrice,
             productSizes,
             productColors,
-            productId,
             productDiscount,
             productFinalPrice,
             productGender,
@@ -39,22 +38,12 @@ module.exports = upload;
             !productPrice ||
             !productSizes ||
             !productColors ||
-            !productId ||
             !productDiscount ||
             !productFinalPrice ||
             !productGender ||
             !productType
         ) {
             return res.status(400).json({ error: 'All required fields must be provided' });
-        }
-
-        // Check if `productId` is a valid MongoDB ObjectId
-        if (!mongoose.isValidObjectId(productId)) {
-            return res.status(400).json({ error: 'Invalid Product ID format' });
-        }
-
-        if (!req.file) {
-            return res.status(400).json({ error: 'Product image is required' });
         }
 
         const product = new Product({
@@ -67,7 +56,6 @@ module.exports = upload;
                 data: fs.readFileSync(req.file.path),
                 contentType: req.file.mimetype,
             },
-            productId,
             productDiscount: parseFloat(productDiscount),
             productFinalPrice: parseFloat(productFinalPrice),
             productGender,
