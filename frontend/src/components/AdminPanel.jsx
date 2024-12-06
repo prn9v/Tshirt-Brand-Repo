@@ -31,37 +31,46 @@ const AdminPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData();
+  // Validate input fields before submitting
+  if (!product.productName || !product.productId || !product.productImage || 
+      !product.productSizes.length || !product.productColors.length ||
+      !product.productPrice || !product.productType || !product.productGender || 
+      !product.productDiscount || !product.productFinalPrice || 
+      !product.productDescription) {
+    alert('All fields are required!');
+    return;
+  }
 
-    // Add product data to FormData
-    formData.append('productId', product.productId);
-    formData.append('productName', product.productName);
-    formData.append('productImage', product.productImage); // Append the image file
-    formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
-    formData.append('productColors', product.productColors.join(',')); // Convert to comma-separated string
-    formData.append('productPrice', product.productPrice);
-    formData.append('productType', product.productType);
-    formData.append('productGender', product.productGender);
-    formData.append('productDiscount', product.productDiscount);
-    formData.append('productFinalPrice', product.productFinalPrice);
-    formData.append('productDescription', product.productDescription);
+  const formData = new FormData();
 
-    // Debugging: Log form data
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+  // Add product data to FormData
+  formData.append('productId', product.productId);
+  formData.append('productName', product.productName);
+  formData.append('productImage', product.productImage); // Ensure it's a File object
+  formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
+  formData.append('productColors', product.productColors.join(',')); // Convert to comma-separated string
+  formData.append('productPrice', product.productPrice);
+  formData.append('productType', product.productType);
+  formData.append('productGender', product.productGender);
+  formData.append('productDiscount', product.productDiscount);
+  formData.append('productFinalPrice', product.productFinalPrice);
+  formData.append('productDescription', product.productDescription);
 
-    try {
-      await addProduct(formData);
-      alert('Product added successfully!');
-    } catch (error) {
-      console.error('Error adding product:', error);
-      alert('Failed to add product');
-    }
+  // Debugging: Log form data
+  console.log('Submitting the following data:');
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}: ${value}`);
+  }
 
-    // Reset form state
+  try {
+    // Call the API to add the product
+    const response = await addProduct(formData);
+    console.log('Product added successfully:', response.data);
+    alert('Product added successfully!');
+
+    // Reset form state after successful submission
     setProduct({
       productName: '',
       productId: '',
@@ -75,7 +84,12 @@ const AdminPage = () => {
       productGender: '',
       productType: '',
     });
-  };
+  } catch (error) {
+    // Log and handle error
+    console.error('Error adding product:', error.response?.data || error);
+    alert('Failed to add product. Please check the console for details.');
+  }
+};
 
   return (
     <div className="min-h-screen bg-green-50 py-6 flex flex-col justify-center sm:py-12">
