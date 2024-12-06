@@ -7,17 +7,17 @@ const fs = require("fs");
 const mongoose = require('mongoose');
 
 // Configure storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Folder to store images
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "uploads/"); // Folder to store images
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+//   },
+// });
 
-const upload = multer({ storage });
-module.exports = upload;
+// const upload = multer({ storage });
+// module.exports = upload;
   // API endpoint to handle product creation
  router.post('/add-product/direct', upload.single('productImage'), async (req, res) => {
     try {
@@ -52,10 +52,10 @@ module.exports = upload;
             productPrice: parseFloat(productPrice),
             productSizes: productSizes.split(',').map((size) => size.trim()),
             productColors: productColors.split(',').map((color) => color.trim()),
-            productImage: {
-                data: fs.readFileSync(req.file.path),
-                contentType: req.file.mimetype,
-            },
+            // productImage: {
+            //     data: fs.readFileSync(req.file.path),
+            //     contentType: req.file.mimetype,
+            // },
             productDiscount: parseFloat(productDiscount),
             productFinalPrice: parseFloat(productFinalPrice),
             productGender,
@@ -82,12 +82,13 @@ module.exports = upload;
 router.get('/', async (req, res) => {
     try {
         const products = await Product.find();
-        const response = products.map((product) => ({
-            ...product._doc,
-            productImage: `data:${product.productImage.contentType};base64,${product.productImage.data.toString(
-                'base64'
-            )}`,
-        }));
+        // const response = products.map((product) => ({
+        //     ...product._doc,
+        //     productImage: `data:${product.productImage.contentType};base64,${product.productImage.data.toString(
+        //         'base64'
+        //     )}`,
+        // }));
+        const response = products;
 
         res.status(200).json(response);
     } catch (err) {
@@ -104,14 +105,14 @@ router.get('/:productId', async (req, res) => {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        const response = {
-            ...product._doc,
-            productImage: product.productImage
-                ? `data:${product.productImage.contentType};base64,${product.productImage.data.toString('base64')}`
-                : null,
-        };
+        // const response = {
+        //     ...product._doc,
+        //     productImage: product.productImage
+        //         ? `data:${product.productImage.contentType};base64,${product.productImage.data.toString('base64')}`
+        //         : null,
+        // };
 
-        res.status(200).json(response);
+        res.status(200).json(product);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
