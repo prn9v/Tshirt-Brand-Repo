@@ -33,11 +33,6 @@ const productSchema = new mongoose.Schema({
         data: Buffer, 
         contentType: String 
     },
-    productId: {
-        type: Number, // Use ObjectId for MongoDB consistency
-        required: [true, "Product ID is required"],
-        unique: true // Ensures no duplicate IDs are created
-    },
     productDiscount: { 
         type: Number, 
         required: [true, "Product discount is required"],
