@@ -4,12 +4,12 @@ const API_URL = 'https://aeshthreets-api.onrender.com/api/products'; // Backend 
 
 // Add a new product (for admin use)
 export const addProduct = async (productData) => {
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Important for FormData
-      },
-    };
-    return await axios.post(`${API_URL}/add-product/direct`, productData, config);
+    // const config = {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data', // Important for FormData
+    //   },
+    // };
+    return await axios.post(`${API_URL}/add-product/direct`, productData);
 };
 
 
