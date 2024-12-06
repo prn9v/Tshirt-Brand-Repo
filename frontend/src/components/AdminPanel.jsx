@@ -30,25 +30,31 @@ const AdminPage = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   // Validate input fields before submitting
-  if (!product.productName || !product.productId || !product.productImage || 
-      !product.productSizes.length || !product.productColors.length ||
-      !product.productPrice || !product.productType || !product.productGender || 
-      !product.productDiscount || !product.productFinalPrice || 
-      !product.productDescription) {
-    alert('All fields are required!');
+  if (
+    !product.productName ||
+    !product.productSizes.length ||
+    !product.productColors.length ||
+    !product.productPrice ||
+    !product.productType ||
+    !product.productGender ||
+    !product.productDiscount ||
+    !product.productFinalPrice ||
+    !product.productDescription
+  ) {
+    alert('All required fields must be filled!');
     return;
   }
 
   const formData = new FormData();
 
   // Add product data to FormData
-  formData.append('productId', product.productId);
+  if (product.productId) formData.append('productId', product.productId); // Optional
+  if (product.productImage) formData.append('productImage', product.productImage); // Optional
   formData.append('productName', product.productName);
-  formData.append('productImage', product.productImage); // Ensure it's a File object
   formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
   formData.append('productColors', product.productColors.join(',')); // Convert to comma-separated string
   formData.append('productPrice', product.productPrice);
@@ -85,7 +91,6 @@ const AdminPage = () => {
       productType: '',
     });
   } catch (error) {
-    // Log and handle error
     console.error('Error adding product:', error.response?.data || error);
     alert('Failed to add product. Please check the console for details.');
   }
@@ -113,7 +118,6 @@ const AdminPage = () => {
                       id={field}
                       name={field}
                       type={field.includes('Price') || field.includes('Discount') ? 'number' : 'text'}
-                      required
                       className="appearance-none rounded-none relative block w-full px-3 py-2 border border-green-300 placeholder-green-500 text-green-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                       placeholder={field.charAt(0).toUpperCase() + field.slice(1).replace('product', '')}
                       value={product[field]}
@@ -132,7 +136,6 @@ const AdminPage = () => {
                     id="productImage"
                     name="productImage"
                     type="file"
-                    required
                     accept="image/*"
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-green-300 placeholder-green-500 text-green-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                     onChange={handleChange}
