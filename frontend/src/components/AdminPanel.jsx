@@ -4,7 +4,7 @@ import { addProduct } from '../api/productApi';
 const AdminPage = () => {
   const [product, setProduct] = useState({
       productName: '',
-      // productImage: null,
+      productImage: null,
       productSizes: [],
       productPrice: '',
       productDiscount: '',
@@ -23,8 +23,8 @@ const AdminPage = () => {
       [name]:
         name === 'productSizes' || name === 'productColors'
           ? value.split(',').map((item) => item.trim()) // Convert comma-separated values to arrays
-          // : name === 'productImage'
-          // ? files[0] // Store file object
+          : name === 'productImage'
+          ? files[0] // Store file object
           : value, // Update other fields
     }));
   };
@@ -51,7 +51,7 @@ const handleSubmit = async (e) => {
   const formData = new FormData();
 
   // Add product data to FormData
-  // if (product.productImage) formData.append('productImage', product.productImage); // Optional
+  if(product.productImage) formData.append('productImage', product.productImage); // Optional
   formData.append('productName', product.productName);
   formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
   formData.append('productColors', product.productColors.join(',')); // Convert to comma-separated string
@@ -77,7 +77,7 @@ const handleSubmit = async (e) => {
     // Reset form state after successful submission
     setProduct({
       productName: '',
-      // productImage: null,
+      productImage: null,
       productSizes: [],
       productPrice: '',
       productDiscount: '',
@@ -126,7 +126,7 @@ const handleSubmit = async (e) => {
                     />
                   </div>
                 ))}
-{/*                 <div className="mb-4">
+                <div className="mb-4">
                   <label htmlFor="productImage" className="block text-sm font-medium text-green-700 mb-2">
                     Product Image
                   </label>
@@ -138,7 +138,7 @@ const handleSubmit = async (e) => {
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-green-300 placeholder-green-500 text-green-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                     onChange={handleChange}
                   />
-                </div> */}
+                </div>
                 <div className="mb-4">
                   <label htmlFor="productSizes" className="block text-sm font-medium text-green-700 mb-2">
                     Product Sizes (comma-separated)
