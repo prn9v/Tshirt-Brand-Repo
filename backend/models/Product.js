@@ -29,10 +29,10 @@ const productSchema = new mongoose.Schema({
             message: "At least one color must be provided"
         }
     }, // Example: ['red', 'blue', 'green']
-    productImage: { 
-        data: Buffer, 
-        contentType: String 
-    },
+    // productImage: { 
+    //     data: Buffer, 
+    //     contentType: String 
+    // },
     productDiscount: { 
         type: Number, 
         required: [true, "Product discount is required"],
