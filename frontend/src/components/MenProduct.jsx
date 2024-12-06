@@ -74,11 +74,11 @@ const MenProduct = () => {
             onClick={() => handleProductClick(product._id)}
           >
             <div className="relative">
-              <img
+{/*               <img
                 src={product.productImage}
                 alt={product.productName}
                 className="w-full h-48 sm:h-56 object-cover"
-              />
+              /> */}
               {product.productDiscount > 0 && (
                 <div className="absolute top-0 right-0 bg-amber-500 text-white px-2 py-1 m-2 rounded-md text-xs font-semibold">
                   {product.productDiscount}% OFF
