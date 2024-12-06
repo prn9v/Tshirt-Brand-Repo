@@ -106,8 +106,15 @@ router.get('/', async (req, res) => {
 // Get product by ID
 router.get('/:productId', async (req, res) => {
   const { productId } = req.params;
+
   try {
+    // Validate if `productId` is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ error: 'Invalid Product ID' });
+    }
+
     const product = await Product.findById(productId);
+
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
@@ -121,8 +128,10 @@ router.get('/:productId', async (req, res) => {
 
     res.status(200).json(response);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error fetching product by ID:', err);
+    res.status(500).json({ error: 'An error occurred while fetching the product' });
   }
 });
+
 
 module.exports = router;
