@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/products'; // Backend API URL
+const API_URL = 'https://aeshthreets-api.onrender.com/api/products'; // Backend API URL
 
 // Fetch all products
 export const fetchProducts = async () => {
