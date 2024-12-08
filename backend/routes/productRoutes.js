@@ -1,22 +1,27 @@
 const express = require('express');
 const Product = require('../models/Product');
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+}
 
 // Configure storage
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Folder to store images
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
-  },
+    destination: (req, file, cb) => {
+        cb(null, uploadsDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
 });
 
 const upload = multer({ storage });
-module.exports = upload;
   // API endpoint to handle product creation
   router.post('/add', upload.single('productImage'), async(req, res) => {
     try {
@@ -43,7 +48,9 @@ module.exports = upload;
       await product.save();
   
       // Optionally, delete the uploaded file from the server
-      fs.unlinkSync(req.file.path);
+       if (fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
   
       res.status(201).json({ message: "Product created successfully", product });
     } catch (err) {
