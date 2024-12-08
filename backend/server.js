@@ -41,7 +41,13 @@ const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
 // Static Files for Uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const uploadsDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+    console.log('Uploads folder created!');
+}
+app.use('/uploads', express.static(uploadsDir));
 
 // Root Route
 app.get('/', (req, res) => {
