@@ -20,6 +20,10 @@ module.exports = upload;
   // API endpoint to handle product creation
   router.post('/add', upload.single('productImage'), async(req, res) => {
     try {
+      const { _id, ...productData } = req.body;
+        if (_id) {
+            return res.status(400).json({ error: "Do not include '_id' in the request" });
+        }
       const product = new Product({
         productName: req.body.productName,
         productDescription: req.body.productDescription,
