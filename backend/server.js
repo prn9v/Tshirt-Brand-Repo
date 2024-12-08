@@ -14,9 +14,20 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'https://aeshthreetstshirts.vercel.app' // Frontend URL, adjust in production
-}));
+const allowedOrigins = [
+    'http://localhost:3000',  // Development
+    'https://aeshthreets-tshirts.onrender.com'  // Production
+  ];
+  
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) { // Allow server-side requests too
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  }));
 
 // MongoDB Atlas Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://pranavdeshmukh5454:5DUxv2OyPWWdBAwk@cluster0.4snwp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
