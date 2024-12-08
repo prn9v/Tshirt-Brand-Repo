@@ -23,40 +23,42 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
   // API endpoint to handle product creation
-  router.post('/add', upload.single('productImage'), async(req, res) => {
+  router.post('/add', upload.single('productImage'), async (req, res) => {
+    console.log(req.body);  // Log request body to check if data is received
+    console.log(req.file);   // Log uploaded file to ensure it's being handled
+    
     try {
-      const { _id, ...productData } = req.body;
+        const { _id, ...productData } = req.body;
         if (_id) {
             return res.status(400).json({ error: "Do not include '_id' in the request" });
         }
-      const product = new Product({
-        productName: req.body.productName,
-        productDescription: req.body.productDescription,
-        productPrice: req.body.productPrice,
-        productSizes: req.body.productSizes.split(","), // Assuming sizes are sent as a comma-separated string
-        productColors: req.body.productColors.split(","), // Assuming colors are sent as a comma-separated string
-        productImage: {
-          data: fs.readFileSync(req.file.path),
-          contentType: req.file.mimetype,
-        },
-        productDiscount: req.body.productDiscount,
-        productFinalPrice: req.body.productFinalPrice,
-        productGender: req.body.productGender, // Assuming genders are sent as a comma-separated string
-        productType: req.body.productType,
-      });
-  
-      await product.save();
-  
-      // Optionally, delete the uploaded file from the server
-       if (fs.existsSync(req.file.path)) {
+
+        const product = new Product({
+            ...productData,
+            productSizes: req.body.productSizes.split(','),
+            productColors: req.body.productColors.split(','),
+            productImage: {
+                data: fs.readFileSync(req.file.path),
+                contentType: req.file.mimetype,
+            },
+        });
+
+        // Save product to database
+        await product.save();
+
+        // Optionally delete the uploaded file after saving
+        if (fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path);
         }
-  
-      res.status(201).json({ message: "Product created successfully", product });
+
+        console.log("Product added to database");
+
+        res.status(201).json({ message: "Product created successfully", product });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        console.error("Error:", err);  // Log any errors that occur
+        res.status(500).json({ error: err.message });
     }
-  });
+});
 
 // Get all products (Customer view)
 router.get('/', async (req, res) => {
