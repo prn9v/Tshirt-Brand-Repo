@@ -4,7 +4,6 @@ import { addProduct } from '../api/productApi';
 const AdminPage = () => {
   const [product, setProduct] = useState({
       productName: '',
-      productId: '',
       productImage: null,
       productSizes: [],
       productPrice: '',
@@ -36,7 +35,6 @@ const AdminPage = () => {
     const formData = new FormData();
 
     // Add product data to FormData
-    formData.append('productId', product.productId);
     formData.append('productName', product.productName);
     formData.append('productImage', product.productImage); // Append the image file
     formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
@@ -64,7 +62,6 @@ const AdminPage = () => {
     // Reset form state
     setProduct({
       productName: '',
-      productId: '',
       productImage: null,
       productSizes: [],
       productPrice: '',
@@ -90,7 +87,7 @@ const AdminPage = () => {
             </div>
             <form className="space-y-6" onSubmit={handleSubmit} encType="multipart/form-data">
               <div className="rounded-md shadow-sm -space-y-px">
-                {['productId', 'productName', 'productType', 'productPrice', 'productDiscount', 'productFinalPrice'].map((field) => (
+                {['productName', 'productType', 'productPrice', 'productDiscount', 'productFinalPrice'].map((field) => (
                   <div key={field} className="mb-4">
                     <label htmlFor={field} className="sr-only">
                       {field.charAt(0).toUpperCase() + field.slice(1).replace('product', '')}
