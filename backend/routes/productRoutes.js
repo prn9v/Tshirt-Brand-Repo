@@ -30,7 +30,6 @@ module.exports = upload;
           data: fs.readFileSync(req.file.path),
           contentType: req.file.mimetype,
         },
-        productId: req.body.productId,
         productDiscount: req.body.productDiscount,
         productFinalPrice: req.body.productFinalPrice,
         productGender: req.body.productGender, // Assuming genders are sent as a comma-separated string
