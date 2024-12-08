@@ -4,7 +4,7 @@ const API_URL = 'https://aeshthreets-api.onrender.com/api/products'; // Backend 
 
 // Add a new product (for admin use)
 export const addProduct = async (productData) => {
-    const API_URL = 'https://aeshthreets-api.onrender.com/api/products/add'; // Replace with your actual backend URL
+    const API_URL = '`${API_URL}/add`'; // Replace with your actual backend URL
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data', // Important for FormData
