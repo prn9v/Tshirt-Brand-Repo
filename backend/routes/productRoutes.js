@@ -35,6 +35,7 @@ const upload = multer({ storage });
 
         const product = new Product({
             productName,
+            productDescription,
             productType,
             productPrice,
             productDiscount,
