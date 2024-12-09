@@ -50,7 +50,7 @@ const upload = multer({ storage });
         });
 
         // Save product to database
-        await product.save();
+        await Product.save();
 
         // Optionally delete the uploaded file after saving
         if (fs.existsSync(req.file.path)) {
