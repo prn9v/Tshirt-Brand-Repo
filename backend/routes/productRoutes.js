@@ -34,7 +34,12 @@ const upload = multer({ storage });
         }
 
         const product = new Product({
-            ...productData,
+            productName,
+            productType,
+            productPrice,
+            productDiscount,
+            productFinalPrice,
+            productGender,
             productSizes: req.body.productSizes.split(','),
             productColors: req.body.productColors.split(','),
             productImage: {
