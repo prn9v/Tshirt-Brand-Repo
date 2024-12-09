@@ -92,11 +92,11 @@ const ProductCard = () => {
             {/* Product Images */}
             <div className="md:w-1/2">
               <div className="relative h-64 sm:h-80 md:h-full">
-{/*                 <img 
+                <img 
                   src={product.productImage} 
                   alt={product.productName} 
                   className="w-full h-full object-cover"
-                /> */}
+                />
                 {product.productDiscount > 0 && (
                   <div className="absolute top-4 left-4 bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold">
                     {product.productDiscount}% OFF
