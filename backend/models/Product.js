@@ -7,7 +7,6 @@ const productSchema = new mongoose.Schema({
     productSizes: { type: [String], required: true }, // Example: ['S', 'M', 'L', 'XL']
     productColors: { type: [String], required: true }, // Example: ['red', 'blue', 'green']
     productImage: { data: Buffer, contentType: String }, // URL for the product image
-    productId: {type: Number,required: true},
     productDiscount: {type: Number,required: true},
     productFinalPrice: {type: Number,required: true},
     productGender: { type: String, required: true},
