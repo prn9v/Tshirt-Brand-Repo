@@ -76,7 +76,7 @@ router.get('/', async (req, res) => {
     //   productImage: `data:${product.productImage.contentType};base64,${product.productImage.data.toString(
     //     "base64"
     //   )}`,
-    }));
+    // }));
 
     res.status(200).json(products);
   } catch (err) {
