@@ -23,7 +23,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
   // API endpoint to handle product creation
-  router.post('/add', upload.single('productImage'), async (req, res) => {
+// , upload.single('productImage')
+  router.post('/add', async (req, res) => {
     console.log(req.body);  // Log request body to check if data is received
     console.log(req.file);   // Log uploaded file to ensure it's being handled
     
@@ -43,10 +44,10 @@ const upload = multer({ storage });
             productGender,
             productSizes: req.body.productSizes.split(','),
             productColors: req.body.productColors.split(','),
-            productImage: {
-                data: fs.readFileSync(req.file.path),
-                contentType: req.file.mimetype,
-            },
+            // productImage: {
+            //     data: fs.readFileSync(req.file.path),
+            //     contentType: req.file.mimetype,
+            // },
         });
 
         // Save product to database
@@ -70,14 +71,14 @@ const upload = multer({ storage });
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
-    const response = products.map((product) => ({
-      ...product._doc,
-      productImage: `data:${product.productImage.contentType};base64,${product.productImage.data.toString(
-        "base64"
-      )}`,
+    // const response = products.map((product) => ({
+    //   ...product._doc,
+    //   productImage: `data:${product.productImage.contentType};base64,${product.productImage.data.toString(
+    //     "base64"
+    //   )}`,
     }));
 
-    res.status(200).json(response);
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -91,14 +92,14 @@ router.get('/:productId', async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    const response = {
-      ...product._doc,
-      productImage: product.productImage
-        ? `data:${product.productImage.contentType};base64,${product.productImage.data.toString("base64")}`
-        : null,
-    };
+    // const response = {
+    //   ...product._doc,
+    //   productImage: product.productImage
+    //     ? `data:${product.productImage.contentType};base64,${product.productImage.data.toString("base64")}`
+    //     : null,
+    // };
 
-    res.status(200).json(response);
+    res.status(200).json(product);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
