@@ -44,10 +44,10 @@ const upload = multer({ storage });
             productGender,
             productSizes: req.body.productSizes.split(','),
             productColors: req.body.productColors.split(','),
-            // productImage: {
-            //     data: fs.readFileSync(req.file.path),
-            //     contentType: req.file.mimetype,
-            // },
+            productImage: {
+                data: fs.readFileSync(req.file.path),
+                contentType: req.file.mimetype,
+            },
         });
 
         // Save product to database
