@@ -4,7 +4,7 @@ import { addProduct } from '../api/productApi';
 const AdminPage = () => {
   const [product, setProduct] = useState({
       productName: '',
-      productImage: null,
+     // productImage: null,
       productSizes: [],
       productPrice: '',
       productDiscount: '',
@@ -23,8 +23,8 @@ const AdminPage = () => {
       [name]:
         name === 'productSizes' || name === 'productColors'
           ? value.split(',').map((item) => item.trim()) // Convert comma-separated values to arrays
-          : name === 'productImage'
-          ? files[0] // Store file object
+          // : name === 'productImage'
+          // ? files[0] // Store file object
           : value, // Update other fields
     }));
   };
@@ -36,7 +36,7 @@ const AdminPage = () => {
 
     // Add product data to FormData
     formData.append('productName', product.productName);
-    formData.append('productImage', product.productImage); // Append the image file
+    // formData.append('productImage', product.productImage); // Append the image file
     formData.append('productSizes', product.productSizes.join(',')); // Convert to comma-separated string
     formData.append('productColors', product.productColors.join(',')); // Convert to comma-separated string
     formData.append('productPrice', product.productPrice);
@@ -63,7 +63,7 @@ const AdminPage = () => {
     // Reset form state
     setProduct({
       productName: '',
-      productImage: null,
+      // productImage: null,
       productSizes: [],
       productPrice: '',
       productDiscount: '',
@@ -108,7 +108,7 @@ const AdminPage = () => {
                     />
                   </div>
                 ))}
-                <div className="mb-4">
+{/*                 <div className="mb-4">
                   <label htmlFor="productImage" className="block text-sm font-medium text-green-700 mb-2">
                     Product Image
                   </label>
@@ -121,7 +121,7 @@ const AdminPage = () => {
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-green-300 placeholder-green-500 text-green-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
                 <div className="mb-4">
                   <label htmlFor="productSizes" className="block text-sm font-medium text-green-700 mb-2">
                     Product Sizes (comma-separated)
