@@ -24,26 +24,27 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
   // API endpoint to handle product creation
 
-  router.post('/add', upload.single('productImage') , async (req, res) => {
-    console.log(req.body);  // Log request body to check if data is received
-    console.log(req.file);   // Log uploaded file to ensure it's being handled
-    
+router.post('/add', upload.single('productImage'), async (req, res) => {
+    console.log('Request Body:', req.body);
+    console.log('Uploaded File:', req.file);
+
     try {
         const { _id, ...productData } = req.body;
+
         if (_id) {
             return res.status(400).json({ error: "Do not include '_id' in the request" });
         }
 
         const product = new Product({
-            productName,
-            productDescription,
-            productType,
-            productPrice,
-            productDiscount,
-            productFinalPrice,
-            productGender,
-            productSizes: req.body.productSizes.split(','),
-            productColors: req.body.productColors.split(','),
+            productName: productData.productName,
+            productDescription: productData.productDescription,
+            productType: productData.productType,
+            productPrice: productData.productPrice,
+            productDiscount: productData.productDiscount,
+            productFinalPrice: productData.productFinalPrice,
+            productGender: productData.productGender,
+            productSizes: productData.productSizes.split(','), // Ensure data is comma-separated
+            productColors: productData.productColors.split(','),
             productImage: {
                 data: fs.readFileSync(req.file.path),
                 contentType: req.file.mimetype,
@@ -51,18 +52,18 @@ const upload = multer({ storage });
         });
 
         // Save product to database
-        await Product.save();
+        await product.save();
 
-        // Optionally delete the uploaded file after saving
+        // Optionally delete the uploaded file
         if (fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path);
         }
 
-        console.log("Product added to database");
+        console.log('Saved Product:', product);
 
-        res.status(201).json({ message: "Product created successfully", product });
+        res.status(201).json({ message: 'Product created successfully', product });
     } catch (err) {
-        console.error("Error:", err);  // Log any errors that occur
+        console.error('Error:', err);
         res.status(500).json({ error: err.message });
     }
 });
