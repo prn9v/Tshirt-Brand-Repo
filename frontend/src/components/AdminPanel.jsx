@@ -54,6 +54,7 @@ const AdminPage = () => {
     try {
       await addProduct(formData);
       alert('Product added successfully!');
+      console.log('Product added is: ', product)
     } catch (error) {
       console.error('Error adding product:', error);
       alert('Failed to add product');
