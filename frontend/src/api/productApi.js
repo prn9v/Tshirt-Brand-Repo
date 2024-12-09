@@ -10,6 +10,7 @@ export const addProduct = async (productData) => {
         'Content-Type': 'multipart/form-data', // Important for FormData
       },
     };
+    console.log('Code return until here ');
     return await axios.post(API_URL, productData, config);
 };
 
