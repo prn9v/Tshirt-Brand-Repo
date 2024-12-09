@@ -6,13 +6,24 @@ const API_URL = 'https://aeshthreets-api.onrender.com/api/products'; // Backend 
 export const addProduct = async (productData) => {
     const API_URL = '`${API_URL}/add`'; // Replace with your actual backend URL
     const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Important for FormData
-      },
-    };
-    console.log('Code return until here ');
-    return await axios.post(API_URL, productData);
-    //config
+    headers: {
+      'Content-Type': 'multipart/form-data', // Important for FormData
+    },
+  };
+
+  try {
+    console.log('Sending product data to backend:', productData);
+
+    const response = await axios.post(API_URL, productData, config);
+
+    console.log('Product successfully added:', response.data);
+    return response.data; // Return the server's response
+  } catch (error) {
+    console.error('Error adding product:', error.response?.data || error.message);
+
+    // Optionally rethrow the error to handle it further in the caller
+    throw error;
+  }
 };
 
 // Fetch all products
