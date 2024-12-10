@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:5000/api/products'; // Backend API URL
 
 // Add a new product (for admin use)
 export const addProduct = async (productData) => {
-    const API = '`${API_URL}/add`'; // Replace with your actual backend URL
+    const API = `${API_URL}/add`; // Replace with your actual backend URL
     const config = {
     headers: {
       'Content-Type': 'multipart/form-data', // Important for FormData
