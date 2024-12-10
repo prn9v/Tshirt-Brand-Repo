@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import {React , useState} from "react";
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = () => {
+
+const LoginPage = ({ setIsAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // This is a mock authentication. In a real app, you'd call an API here.
+    // Mock authentication logic
     if (username === 'admin' && password === 'password') {
+      setIsAuthenticated(true); // Update the auth state
       navigate('/admin');
     } else {
+      setIsAuthenticated(false);
       navigate('/home');
     }
   };
@@ -66,4 +69,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
