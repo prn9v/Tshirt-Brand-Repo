@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 const allowedOrigins = [
     'http://localhost:3000',  // Development
-    'https://aeshthreets-tshirts.onrender.com',  // Production
+    'https://aeshthreets-tshirts.onrender.com/',  // Production
 ];
 
 app.use(cors({
