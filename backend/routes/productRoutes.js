@@ -29,11 +29,6 @@ router.post('/add', upload.single('productImage'), async (req, res) => {
     console.log('Uploaded File:', req.file);
 
     try {
-        const { _id, ...productData } = req.body;
-
-        if (_id) {
-            return res.status(400).json({ error: "Do not include '_id' in the request" });
-        }
 
         const product = new Product({
             productName: productData.productName,
@@ -52,16 +47,20 @@ router.post('/add', upload.single('productImage'), async (req, res) => {
         });
 
         // Save product to database
-        await product.save();
+        const savedProduct = await product.save(); // Ensure this is successful
+        if (!savedProduct) {
+          return res.status(500).json({ error: 'Failed to save product' });
+        }
+        
 
         // Optionally delete the uploaded file
         if (fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path);
         }
 
-        console.log('Saved Product:', product);
+        console.log('Saved Product:', savedProduct);
 
-        res.status(201).json({ message: 'Product created successfully', product });
+        res.status(200).json({ message: 'Product added successfully' });
     } catch (err) {
         console.error('Error:', err);
         res.status(500).json({ error: err.message });
