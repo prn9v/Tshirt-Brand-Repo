@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://aeshthreets-api.onrender.com/api/products'; // Backend API URL
+const API_URL = 'https://aeshthreets-api.onrender.com/api/products' || 'http://localhost:5000/api/products'; // Backend API URL
 
 // Add a new product (for admin use)
 export const addProduct = async (productData) => {
