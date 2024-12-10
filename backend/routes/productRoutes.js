@@ -31,15 +31,15 @@ router.post('/add', upload.single('productImage'), async (req, res) => {
     try {
 
         const product = new Product({
-            productName: productData.productName,
-            productDescription: productData.productDescription,
-            productType: productData.productType,
-            productPrice: productData.productPrice,
-            productDiscount: productData.productDiscount,
-            productFinalPrice: productData.productFinalPrice,
-            productGender: productData.productGender,
-            productSizes: productData.productSizes.split(','), // Ensure data is comma-separated
-            productColors: productData.productColors.split(','),
+            productName: req.body.productName,
+            productDescription: req.body.productDescription,
+            productType: req.body.productType,
+            productPrice: req.body.productPrice,
+            productDiscount: req.body.productDiscount,
+            productFinalPrice: req.body.productFinalPrice,
+            productGender: req.body.productGender,
+            productSizes: req.body.productSizes.split(','), // Ensure data is comma-separated
+            productColors: req.body.productColors.split(','),
             productImage: {
                 data: fs.readFileSync(req.file.path),
                 contentType: req.file.mimetype,
