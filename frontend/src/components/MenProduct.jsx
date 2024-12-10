@@ -8,6 +8,8 @@ const MenProduct = () => {
   const [sortBy, setSortBy] = useState("low-to-high");
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
   const navigate = useNavigate();
 
   // Fetch products on component mount
@@ -33,6 +35,11 @@ const MenProduct = () => {
   // Handle Sorting Change
   const handleSortChange = (e) => setSortBy(e.target.value);
 
+  // Handle Page Change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   // Render
   if (error) {
     return <p className="text-red-500 text-center">{error}</p>;
@@ -42,14 +49,20 @@ const MenProduct = () => {
     return <Loader/>;
   }
 
-  const firstSortProducts = [...products].filter((product) => product.productGender === 'Male' || product.productGender === 'Unisex');
+  const menProducts = [...products].filter((product) => product.productGender === 'Male' || product.productGender === 'Unisex');
 
    // Sort products based on the selected sort order
-  const sortedProducts = [...firstSortProducts].sort((a, b) => {
+  const sortedProducts = [...menProducts].sort((a, b) => {
     if (sortBy === "low-to-high") return a.productFinalPrice - b.productFinalPrice;
     if (sortBy === "high-to-low") return b.productFinalPrice - a.productFinalPrice;
     return 0;
   });
+
+  // Pagination
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
   return (
     <div className="min-h-screen bg-green-50 px-4 sm:px-6 lg:px-8 py-8">
@@ -67,7 +80,7 @@ const MenProduct = () => {
         </select>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-        {sortedProducts.map((product) => (
+        {currentProducts.map((product) => (
           <div
             key={product.productId}
             className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer"
@@ -131,8 +144,40 @@ const MenProduct = () => {
           </div>
         ))}
       </div>
+      <div className="mt-8 flex justify-center">
+        <nav className="inline-flex rounded-md shadow">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-green-600 disabled:opacity-30 hover:text-white"
+          >
+            Previous
+          </button>
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-3 py-2 border border-gray-300 bg-white text-sm font-medium ${
+                currentPage === index + 1
+                  ?'text-green-600 bg-white'
+                  : 'text-gray-500 hover:bg-gray-50'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-green-600 disabled:opacity-30 hover:text-white"
+          >
+            Next
+          </button>
+        </nav>
+      </div>
     </div>
   );
 };
 
 export default MenProduct;
+
